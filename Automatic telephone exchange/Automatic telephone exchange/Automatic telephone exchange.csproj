@@ -6,8 +6,4 @@
     <RootNamespace>Automatic_telephone_exchange</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="EventArguments\" />
-  </ItemGroup>
-
 </Project>
