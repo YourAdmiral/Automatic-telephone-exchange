@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ATE\" />
-    <Folder Include="BillingSystem\" />
+    <Folder Include="Events\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
 
 </Project>

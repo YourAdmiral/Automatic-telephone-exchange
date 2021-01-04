@@ -6,7 +6,7 @@ namespace Automatic_telephone_exchange
     {
         static void Main(string[] args)
         {
-            
+
         }
     }
 }
