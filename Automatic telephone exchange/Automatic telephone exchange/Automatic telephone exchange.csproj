@@ -6,4 +6,9 @@
     <RootNamespace>Automatic_telephone_exchange</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="ATE\" />
+    <Folder Include="BillingSystem\" />
+  </ItemGroup>
+
 </Project>
