@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Automatic_telephone_exchange.ATE
 {
-    public interface IATE
+    public interface IAutomaticTelephoneExchange
     {
     }
 }

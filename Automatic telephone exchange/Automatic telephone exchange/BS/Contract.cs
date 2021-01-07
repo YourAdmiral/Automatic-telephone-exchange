@@ -7,13 +7,14 @@ namespace Automatic_telephone_exchange.BS
 {
     public class Contract : IContract
     {
-        public int Number { get; private set; }
         public Client Client { get; private set; }
+        public Terminal Terminal { get; private set; }
         public TariffPlan Tariff { get; private set; }
         public Contract(Client client)
         {
-            Number = new Random().Next(0, 10000);
             Client = client;
+            Terminal = new Terminal(new Random().Next(0, 10000), 
+                new Port());
             Tariff = new TariffPlan();
         }
     }

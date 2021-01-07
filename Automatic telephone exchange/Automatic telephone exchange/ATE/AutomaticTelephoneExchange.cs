@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Automatic_telephone_exchange.ATE
 {
-    public class ATE : IATE
+    public class AutomaticTelephoneExchange : IAutomaticTelephoneExchange
     {
-
     }
 }
