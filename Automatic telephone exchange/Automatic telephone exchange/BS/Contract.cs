@@ -10,11 +10,20 @@ namespace Automatic_telephone_exchange.BS
         public Client Client { get; private set; }
         public Terminal Terminal { get; private set; }
         public TariffPlan Tariff { get; private set; }
-        public Contract(Client client)
+        public Contract(IAutomaticTelephoneExchange ate)
         {
-            Client = client;
-            Terminal = new Terminal(new Random().Next(0, 10000), 
-                new Port());
+            Console.WriteLine("Enter information about client:");
+            Console.WriteLine("First name: ");
+            string firstName = Console.ReadLine();
+            Console.WriteLine("Last name: ");
+            string lastName = Console.ReadLine();
+            Console.WriteLine("Amount of money: ");
+            double money = Convert.ToDouble(Console.ReadLine());
+            Client = new Client(
+                firstName,
+                lastName,
+                money);
+            Terminal = new Terminal(ate);
             Tariff = new TariffPlan();
         }
     }

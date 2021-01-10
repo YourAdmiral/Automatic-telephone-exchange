@@ -11,7 +11,7 @@ namespace Automatic_telephone_exchange.ATE
         public PortState State;
         public event EventHandler<CallStartEventArgs> PortAnswerEvent;
         public event EventHandler<CallEventArgs> PortCallEvent;
-        public event EventHandler<CallStartEventArgs> AnswerEvent;
+        public event EventHandler<CallStartEventArgs> CallStartEvent;
         public event EventHandler<CallEndEventArgs> EndCallEvent;
         public event EventHandler<CallEventArgs> CallEvent;
         public delegate void MessageHandler(string message);
@@ -73,7 +73,7 @@ namespace Automatic_telephone_exchange.ATE
         }
         private void AnswerTo(object sender, CallStartEventArgs e)
         {
-            AnswerEvent?.Invoke(this, new CallStartEventArgs(
+            CallStartEvent?.Invoke(this, new CallStartEventArgs(
                 e.CurrentNumber,
                 e.TargetNumber,
                 e.CallState,

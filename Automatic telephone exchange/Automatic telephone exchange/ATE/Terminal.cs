@@ -9,15 +9,18 @@ namespace Automatic_telephone_exchange.ATE
     public class Terminal
     {
         public int Number { get; private set; }
+        public Port Port { get; private set; }
         public event EventHandler<CallStartEventArgs> CallStartEvent;
         public event EventHandler<CallEndEventArgs> CallEndEvent;
         public event EventHandler<CallEventArgs> CallEvent;
-        private Port _port;
         private int _id;
-        public Terminal(int number, Port port)
+        public Terminal(IAutomaticTelephoneExchange ate)
         {
-            Number = number;
-            _port = port;
+            Number = new Random().Next(0,10000);
+            Port = new Port();
+            Port.CallStartEvent += ate.CallTo;
+            Port.CallEvent += ate.CallTo;
+            Port.EndCallEvent += ate.CallTo;
         }
         public void Call(int targetNumber)
         {
@@ -29,18 +32,18 @@ namespace Automatic_telephone_exchange.ATE
         }
         public void ConnectToPort()
         {
-            if (_port.Connect(this))
+            if (Port.Connect(this))
             {
-                _port.PortCallEvent += TakeIncomingCall;
-                _port.PortAnswerEvent += TakeAnswer;
+                Port.PortCallEvent += TakeIncomingCall;
+                Port.PortAnswerEvent += TakeAnswer;
             }
         }
         public void DisconnectFromPort()
         {
-            if (_port.Disconnect(this))
+            if (Port.Disconnect(this))
             {
-                _port.PortCallEvent -= TakeIncomingCall;
-                _port.PortAnswerEvent -= TakeAnswer;
+                Port.PortCallEvent -= TakeIncomingCall;
+                Port.PortAnswerEvent -= TakeAnswer;
             }
         }
         public void AnswerToCall(int targetNumber, CallState state, int id)
@@ -53,14 +56,15 @@ namespace Automatic_telephone_exchange.ATE
             if (e.CallState == CallState.Answered)
                 Console.WriteLine($"Terminal {e.CurrentNumber} answered call from {e.TargetNumber}.");
             else
-                Console.WriteLine($"Terminal {e.CurrentNumber} rejected call from {e.TargetNumber}.");
+                Console.WriteLine($"Terminal {e.CurrentNumber} rejected call.");
         }
         public void TakeIncomingCall(object sender, CallEventArgs e)
         {
             ConsoleKey choose = default;
             _id = e.Id;
+            bool check = true;
             Console.WriteLine($"Incoming call from {e.CurrentNumber} to {e.TargetNumber}");
-            while (choose != ConsoleKey.D1 || choose != ConsoleKey.D2)
+            while (check)
             {
                 Console.WriteLine("Accept or reject?\n1 - Accept\n2 - Reject");
                 choose = Console.ReadKey(true).Key;
@@ -68,9 +72,11 @@ namespace Automatic_telephone_exchange.ATE
                 {
                     case ConsoleKey.D1:
                         AnswerToCall(e.CurrentNumber, CallState.Answered, e.Id);
+                        check = false;
                         break;
                     case ConsoleKey.D2:
                         EndCall();
+                        check = false;
                         break;
                 }
             }
