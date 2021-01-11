@@ -6,6 +6,7 @@ namespace Automatic_telephone_exchange.BS
 {
     public interface IBillingSystem
     {
-
+        public void ShowReport();
+        public void SortBy(Func<CallInfo, object> func);
     }
 }

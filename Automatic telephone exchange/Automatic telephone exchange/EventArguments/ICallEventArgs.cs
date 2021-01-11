@@ -6,8 +6,8 @@ namespace Automatic_telephone_exchange.EventArguments
 {
     public interface ICallEventArgs
     {
-        int Id { get; }
-        int CurrentNumber { get; }
-        int TargetNumber { get; }
+        public int Id { get; }
+        public int CurrentNumber { get; }
+        public int TargetNumber { get; }
     }
 }

@@ -7,8 +7,8 @@ namespace Automatic_telephone_exchange.BS
 {
     public interface IContract
     {
-        Client Client { get; }
-        Terminal Terminal { get; }
-        TariffPlan Tariff { get; }
+        public Client Client { get; }
+        public Terminal Terminal { get; }
+        public TariffPlan Tariff { get; }
     }
 }
