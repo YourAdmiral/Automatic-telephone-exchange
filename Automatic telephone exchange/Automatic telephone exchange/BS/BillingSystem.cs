@@ -33,5 +33,9 @@ namespace Automatic_telephone_exchange.BS
         {
             _calls = _ate.GetCallList().OrderBy(func).ToList();
         }
+        public IList<CallInfo> FilterBy(Func<CallInfo, bool> func)
+        {
+            return _calls.Where(func).ToList();
+        }
     }
 }

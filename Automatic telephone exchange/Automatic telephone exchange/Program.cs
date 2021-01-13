@@ -34,7 +34,7 @@ namespace Automatic_telephone_exchange
             t1.EndCall();
             Console.WriteLine("\nReport: ");
             bs.ShowReport();
-            bs.SortBy(x=>x.Duration);
+            bs.SortBy(x => x.Duration);
             Console.WriteLine("\n-----Sorted-----!");
             bs.ShowReport();
             Console.WriteLine(c1.Client.Money);
@@ -50,6 +50,18 @@ namespace Automatic_telephone_exchange
             bs.SortBy(x => x.CallStart.Date);
             Console.WriteLine("\n-----Sorted-----!");
             bs.ShowReport();
+
+            Console.WriteLine("\nFilter:");
+            foreach (var item in bs.FilterBy(x => x.CurrentNumber == t1.Number))
+            {
+                Console.WriteLine($"Call From: {item.CurrentNumber}\n" +
+                    $"Call To: {item.TargetNumber}\n" +
+                    $"Duration: {item.Duration} sec.\n" +
+                    $"Call start: {item.CallStart}\n" +
+                    $"Call end: {item.CallEnd}\n" +
+                    $"Call cost: {item.Cost}\n");
+                Console.WriteLine("---------------");
+            }
 
             t1.DisconnectFromPort();
             t2.DisconnectFromPort();
