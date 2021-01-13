@@ -35,9 +35,22 @@ namespace Automatic_telephone_exchange
             Console.WriteLine("\nReport: ");
             bs.ShowReport();
             bs.SortBy(x=>x.Duration);
-            Console.WriteLine("\nSorted!");
+            Console.WriteLine("\n-----Sorted-----!");
             bs.ShowReport();
             Console.WriteLine(c1.Client.Money);
+
+            bs.SortBy(x => x.CurrentNumber);
+            Console.WriteLine("\n-----Sorted-----!");
+            bs.ShowReport();
+
+            bs.SortBy(x => x.Cost);
+            Console.WriteLine("\n-----Sorted-----!");
+            bs.ShowReport();
+
+            bs.SortBy(x => x.CallStart.Date);
+            Console.WriteLine("\n-----Sorted-----!");
+            bs.ShowReport();
+
             t1.DisconnectFromPort();
             t2.DisconnectFromPort();
             t3.DisconnectFromPort();
