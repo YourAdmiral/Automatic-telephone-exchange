@@ -9,19 +9,34 @@ namespace Automatic_telephone_exchange.ATE
     public class Port
     {
         public PortState State;
+        public delegate void MessageHandler(string message);
         public event EventHandler<CallStartEventArgs> PortAnswerEvent;
         public event EventHandler<CallEventArgs> PortCallEvent;
         public event EventHandler<CallStartEventArgs> CallStartEvent;
         public event EventHandler<CallEndEventArgs> EndCallEvent;
         public event EventHandler<CallEventArgs> CallEvent;
-        public delegate void MessageHandler(string message);
         public event MessageHandler ConnectEvent;
         public event MessageHandler DisconnectEvent;
-        public Port()
+        private IAutomaticTelephoneExchange _ate;
+        private Terminal _terminal;
+        public Port(IAutomaticTelephoneExchange ate)
         {
+            _ate = ate;
             State = PortState.Disconnected;
             ConnectEvent += DisplayMessage;
             DisconnectEvent += DisplayMessage;
+            CallStartEvent += ate.CallTo;
+            CallEvent += ate.CallTo;
+            EndCallEvent += ate.CallTo;
+        }
+        ~Port()
+        {
+            Disconnect();
+            ConnectEvent -= DisplayMessage;
+            DisconnectEvent -= DisplayMessage;
+            CallStartEvent -= _ate.CallTo;
+            CallEvent -= _ate.CallTo;
+            EndCallEvent -= _ate.CallTo;
         }
         public bool Connect(Terminal terminal)
         {
@@ -32,20 +47,32 @@ namespace Automatic_telephone_exchange.ATE
                 terminal.CallEndEvent += EndCall;
                 terminal.CallEvent += CallTo;
                 ConnectEvent?.Invoke($"Terminal {terminal.Number} connected to port!");
+                _terminal = terminal;
+                return true;
             }
-            return true;
+            else
+            {
+                ConnectEvent?.Invoke($"Port engaged by Terminal {_terminal.Number}!");
+                return false;
+            }
         }
-        public bool Disconnect(Terminal terminal)
+        public bool Disconnect()
         {
             if (State == PortState.Connected)
             {
                 State = PortState.Disconnected;
-                terminal.CallStartEvent -= AnswerTo;
-                terminal.CallEndEvent -= EndCall;
-                terminal.CallEvent -= CallTo;
-                DisconnectEvent?.Invoke($"Terminal {terminal.Number} disconnected from port!");
+                _terminal.CallStartEvent -= AnswerTo;
+                _terminal.CallEndEvent -= EndCall;
+                _terminal.CallEvent -= CallTo;
+                DisconnectEvent?.Invoke($"Terminal {_terminal.Number} disconnected from port!");
+                _terminal = null;
+                return true;
             }
-            return true;
+            else
+            {
+                ConnectEvent?.Invoke($"Port already disconnected!");
+                return false;
+            }
         }
         public void AnswerCall(int number, int targetNumber, CallState state)
         {

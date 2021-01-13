@@ -22,6 +22,10 @@ namespace Automatic_telephone_exchange.ATE
             _clientsInfo.Add(contract.Terminal.Number, new Tuple<Port, IContract>(contract.Terminal.Port, contract));
             return contract;
         }
+        public void CloseContract(IContract contract)
+        {
+            contract.Terminal.DisconnectFromPort();
+        }
         public void CallTo(object sender, ICallEventArgs e)
         {
             if ((_clientsInfo.ContainsKey(e.TargetNumber) && e.TargetNumber != e.CurrentNumber) || e is CallEndEventArgs)

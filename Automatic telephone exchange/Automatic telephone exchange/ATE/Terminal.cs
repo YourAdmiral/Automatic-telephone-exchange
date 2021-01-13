@@ -14,13 +14,14 @@ namespace Automatic_telephone_exchange.ATE
         public event EventHandler<CallEndEventArgs> CallEndEvent;
         public event EventHandler<CallEventArgs> CallEvent;
         private int _id;
-        public Terminal(IAutomaticTelephoneExchange ate)
+        public Terminal(Port port)
         {
             Number = new Random().Next(0,10000);
-            Port = new Port();
-            Port.CallStartEvent += ate.CallTo;
-            Port.CallEvent += ate.CallTo;
-            Port.EndCallEvent += ate.CallTo;
+            Port = port;
+        }
+        ~Terminal()
+        {
+            DisconnectFromPort();
         }
         public void Call(int targetNumber)
         {
@@ -40,7 +41,7 @@ namespace Automatic_telephone_exchange.ATE
         }
         public void DisconnectFromPort()
         {
-            if (Port.Disconnect(this))
+            if (Port.Disconnect())
             {
                 Port.PortCallEvent -= TakeIncomingCall;
                 Port.PortAnswerEvent -= TakeAnswer;

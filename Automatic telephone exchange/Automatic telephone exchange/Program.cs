@@ -24,7 +24,7 @@ namespace Automatic_telephone_exchange
             t2.ConnectToPort();
             t3.ConnectToPort();
             t1.Call(t2.Number);
-            Thread.Sleep(63000);
+            Thread.Sleep(4000);
             t2.EndCall();
             t2.Call(t3.Number);
             Thread.Sleep(3000);
@@ -34,7 +34,7 @@ namespace Automatic_telephone_exchange
             t1.EndCall();
             Console.WriteLine("\nReport: ");
             bs.ShowReport();
-            bs.SortBy(x=>x.Cost);
+            bs.SortBy(x=>x.Duration);
             Console.WriteLine("\nSorted!");
             bs.ShowReport();
             Console.WriteLine(c1.Client.Money);

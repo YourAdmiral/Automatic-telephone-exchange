@@ -23,7 +23,8 @@ namespace Automatic_telephone_exchange.BS
                 firstName,
                 lastName,
                 money);
-            Terminal = new Terminal(ate);
+            Port port = new Port(ate);
+            Terminal = new Terminal(port);
             Tariff = new TariffPlan();
         }
     }
