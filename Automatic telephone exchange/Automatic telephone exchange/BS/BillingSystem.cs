@@ -9,16 +9,18 @@ namespace Automatic_telephone_exchange.BS
 {
     public class BillingSystem : IBillingSystem
     {
-        IAutomaticTelephoneExchange _ate;
-        IList<CallInfo> _calls;
+        private IAutomaticTelephoneExchange _ate;
+        public delegate void MessageHandler(string message);
+        public event MessageHandler MessageEvent;
         public BillingSystem(IAutomaticTelephoneExchange ate)
         {
             _ate = ate;
-            _calls = _ate.GetCallList();
+            MessageEvent += DisplayMessage;
         }
         public void ShowReport()
         {
-            foreach (var call in _calls)
+            MessageEvent?.Invoke("Report: ");
+            foreach (var call in _ate.GetCallList())
             {
                 Console.WriteLine($"Call From: {call.CurrentNumber}\n" +
                     $"Call To: {call.TargetNumber}\n" +
@@ -31,11 +33,35 @@ namespace Automatic_telephone_exchange.BS
         }
         public void SortBy(Func<CallInfo, object> func)
         {
-            _calls = _ate.GetCallList().OrderBy(func).ToList();
+            MessageEvent?.Invoke("Sorted!");
+            ShowReport(_ate.GetCallList().OrderBy(func).ToList());
         }
-        public IList<CallInfo> FilterBy(Func<CallInfo, bool> func)
+        public void FilterBy(Func<CallInfo, bool> func)
         {
-            return _calls.Where(func).ToList();
+            MessageEvent?.Invoke("Filtered!");
+            ShowReport(_ate.GetCallList().Where(func).ToList());
+        }
+        public void UnsubscribeFromEvent()
+        {
+            MessageEvent -= DisplayMessage;
+        }
+        private static void DisplayMessage(string message)
+        {
+            Console.WriteLine(message);
+        }
+        private void ShowReport(IList<CallInfo> calls)
+        {
+            MessageEvent?.Invoke("Report: ");
+            foreach (var call in calls)
+            {
+                Console.WriteLine($"Call From: {call.CurrentNumber}\n" +
+                    $"Call To: {call.TargetNumber}\n" +
+                    $"Duration: {call.Duration} sec.\n" +
+                    $"Call start: {call.CallStart}\n" +
+                    $"Call end: {call.CallEnd}\n" +
+                    $"Call cost: {call.Cost}\n");
+                Console.WriteLine("---------------");
+            }
         }
     }
 }

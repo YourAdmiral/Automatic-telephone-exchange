@@ -8,6 +8,6 @@ namespace Automatic_telephone_exchange.BS
     {
         public void ShowReport();
         public void SortBy(Func<CallInfo, object> func);
-        public IList<CallInfo> FilterBy(Func<CallInfo, bool> func);
+        public void FilterBy(Func<CallInfo, bool> func);
     }
 }

@@ -32,36 +32,18 @@ namespace Automatic_telephone_exchange
             t3.Call(t1.Number);
             Thread.Sleep(1000);
             t1.EndCall();
-            Console.WriteLine("\nReport: ");
+
             bs.ShowReport();
             bs.SortBy(x => x.Duration);
-            Console.WriteLine("\n-----Sorted-----!");
-            bs.ShowReport();
-            Console.WriteLine(c1.Client.Money);
-
             bs.SortBy(x => x.CurrentNumber);
-            Console.WriteLine("\n-----Sorted-----!");
-            bs.ShowReport();
-
             bs.SortBy(x => x.Cost);
-            Console.WriteLine("\n-----Sorted-----!");
-            bs.ShowReport();
-
             bs.SortBy(x => x.CallStart.Date);
-            Console.WriteLine("\n-----Sorted-----!");
-            bs.ShowReport();
+            bs.FilterBy(x => x.CurrentNumber == t1.Number);
+            bs.FilterBy(x => x.Cost == 0);
+            bs.FilterBy(x => x.CallStart.Date.ToShortDateString() == DateTime.Now.ToShortDateString());
 
-            Console.WriteLine("\nFilter:");
-            foreach (var item in bs.FilterBy(x => x.CurrentNumber == t1.Number))
-            {
-                Console.WriteLine($"Call From: {item.CurrentNumber}\n" +
-                    $"Call To: {item.TargetNumber}\n" +
-                    $"Duration: {item.Duration} sec.\n" +
-                    $"Call start: {item.CallStart}\n" +
-                    $"Call end: {item.CallEnd}\n" +
-                    $"Call cost: {item.Cost}\n");
-                Console.WriteLine("---------------");
-            }
+            Console.WriteLine("Calls from previous month: ");
+            bs.FilterBy(x => x.CallStart.Date.Month == DateTime.Now.Month-1);
 
             t1.DisconnectFromPort();
             t2.DisconnectFromPort();
