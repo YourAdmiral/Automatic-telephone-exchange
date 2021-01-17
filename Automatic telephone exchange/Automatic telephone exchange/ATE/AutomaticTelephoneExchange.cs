@@ -16,15 +16,9 @@ namespace Automatic_telephone_exchange.ATE
         {
             _clientsInfo = new Dictionary<int, Tuple<Port, IContract>>();
         }
-        public IContract GetContract()
+        public void AddClientsInfo(Contract contract)
         {
-            var contract = new Contract(this);
             _clientsInfo.Add(contract.Terminal.Number, new Tuple<Port, IContract>(contract.Terminal.Port, contract));
-            return contract;
-        }
-        public void CloseContract(IContract contract)
-        {
-            contract.Terminal.DisconnectFromPort();
         }
         public void CallTo(object sender, ICallEventArgs e)
         {

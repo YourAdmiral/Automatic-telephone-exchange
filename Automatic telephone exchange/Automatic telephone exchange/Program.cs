@@ -13,9 +13,10 @@ namespace Automatic_telephone_exchange
         {
             IAutomaticTelephoneExchange ate = new AutomaticTelephoneExchange();
             IBillingSystem bs = new BillingSystem(ate);
-            IContract c1 = ate.GetContract();
-            IContract c2 = ate.GetContract();
-            IContract c3 = ate.GetContract();
+            IContractManager cm = new ContractManager(ate);
+            IContract c1 = cm.GetContract();
+            IContract c2 = cm.GetContract();
+            IContract c3 = cm.GetContract();
             c1.Client.AddMoney(10);
             Terminal t1 = c1.Terminal;
             Terminal t2 = c2.Terminal;
