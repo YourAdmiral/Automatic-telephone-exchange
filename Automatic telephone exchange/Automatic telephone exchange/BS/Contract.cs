@@ -18,7 +18,17 @@ namespace Automatic_telephone_exchange.BS
             Console.WriteLine("Last name: ");
             string lastName = Console.ReadLine();
             Console.WriteLine("Amount of money: ");
-            double money = Convert.ToDouble(Console.ReadLine());
+            bool isDouble = false;
+            double money = default;
+            while (!isDouble)
+            {
+                string str = Console.ReadLine();
+                isDouble = double.TryParse(str, out money);
+                if (!isDouble)
+                {
+                    Console.WriteLine("Incorrect number entered!");
+                }
+            }
             Client = new Client(
                 firstName,
                 lastName,
